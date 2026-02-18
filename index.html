@@ -102,7 +102,7 @@
             color: #475569;
         }
         p, li {
-            color: #979797;
+            color: #545454;
         }
         ul, ol {
             padding-left: 25px;
@@ -259,13 +259,11 @@
             <div class="header-text">
                 <h1 data-i18n="title">📘 Documentation for @anti_spam_ua_bot</h1>
                 <p data-i18n="subtitle">Automatic group moderation • Anti‑spam • Punishment system</p>
-                <span class="badge" data-i18n="version">Version 2.0 (updated 16.02.2026)</span>
+                <span class="badge" data-i18n="version">Version 2.1 (updated 18.02.2026)</span>
             </div>
             <div class="lang-switcher">
                 <span class="lang-btn active" data-lang="en" title="English">🇬🇧</span>
                 <span class="lang-btn" data-lang="uk" title="Українська">🇺🇦</span>
-               <!--  <span class="lang-btn" data-lang="ru" title="Русский">🇷🇺</span> -->
-               <!--  <span class="lang-btn" data-lang="pl" title="Polski">🇵🇱</span> -->
             </div>
         </div>
 
@@ -301,10 +299,11 @@
                 <li data-i18n="about.feature1">Deleting profanity, insults, suspicious phrases (ads, phishing).</li>
                 <li data-i18n="about.feature2">Link blocking (configurable).</li>
                 <li data-i18n="about.feature3">Anti‑flood (limits on messages per time).</li>
-                <li data-i18n="about.feature4">Duplicate message detection (identical messages).</li>
+                <li data-i18n="about.feature4">Duplicate message detection (identical messages within 24h).</li>
                 <li data-i18n="about.feature5">Captcha for new members (in development).</li>
                 <li data-i18n="about.feature6">Flexible punishment system (see section 4).</li>
                 <li data-i18n="about.feature7">Convenient control panel for admins.</li>
+                <li data-i18n="about.feature8">Password protection for private chats (optional).</li>
             </ul>
             <p data-i18n="about.desc3">The bot is written in Python (aiogram 2.25.1) and uses SQLite to store settings.</p>
 
@@ -354,8 +353,8 @@
             </div>
             <p data-i18n="panel.note">When you press a button, the settings change instantly and you receive a confirmation.</p>
 
-            <!-- 4. Punishment system -->
-            <h2 id="punishment" data-i18n="punishment.title">4. ⚖️ Punishment system (updated)</h2>
+            <!-- 4. Punishment system (UPDATED) -->
+            <h2 id="punishment" data-i18n="punishment.title">4. ⚖️ Punishment system (updated 18.02.2026)</h2>
             <p data-i18n="punishment.desc">The bot automatically punishes offenders depending on the type of violation. All punishments are accompanied by message deletion and a chat notification (the notification is deleted after 30 seconds).</p>
             <div class="table-wrap">
                 <table>
@@ -367,7 +366,7 @@
                         <tr><td><strong data-i18n="punishment.crypto">Links to channels / crypto scams</strong> (t.me/..., crypto keywords)</td><td data-i18n="punishment.crypto.action">🟡 Deletion + warning. After 3 warnings – 🔴 <strong>ban for 10 days</strong>.</td></tr>
                         <tr><td><strong data-i18n="punishment.regular">Regular links</strong> (other URLs)</td><td data-i18n="punishment.regular.action">🟡 Deletion + warning. After 3 warnings – 🔴 <strong>ban for 1 day</strong>.</td></tr>
                         <tr><td><strong data-i18n="punishment.flood">Flood</strong> (≥4 messages in 5 s)</td><td data-i18n="punishment.flood.action">🟡 Deletion + warning. After 3 warnings – 🔴 <strong>ban for 1 day</strong>.</td></tr>
-                        <tr><td><strong data-i18n="punishment.repeat">Duplicates</strong> (3 identical messages in 60 s)</td><td data-i18n="punishment.repeat.action">🔴 <strong>Instant ban for 7 days</strong> (no warnings).</td></tr>
+                        <tr><td><strong data-i18n="punishment.repeat">Duplicates</strong> (3 identical messages within 24 hours)</td><td data-i18n="punishment.repeat.action">🔴 <strong>Instant ban for 7 days</strong> (no warnings).</td></tr>
                         <tr><td><strong data-i18n="punishment.mention">@mentions</strong></td><td data-i18n="punishment.mention.action">✅ <strong>NOT BLOCKED</strong>.</td></tr>
                     </tbody>
                 </table>
@@ -386,6 +385,7 @@
                         <tr><th data-i18n="commands.table.command">Command</th><th data-i18n="commands.table.description">Description</th></tr>
                     </thead>
                     <tbody>
+                        <tr><td><code>/login</code></td><td data-i18n="commands.login"><strong>Private chat only:</strong> If a password is set in <code>.env</code>, you must first log in with <code>/login your_password</code> to use any other commands in private.</td></tr>
                         <tr><td><code>/panel</code></td><td data-i18n="commands.panel">Open control panel (sent privately).</td></tr>
                         <tr><td><code>/status</code></td><td data-i18n="commands.status">Show current module status, limits, statistics. Automatically deleted after 10 seconds in group.</td></tr>
                         <tr><td><code>/diag</code></td><td data-i18n="commands.diag">Diagnostics: chat ID, bot permissions, admin status.</td></tr>
@@ -412,9 +412,11 @@
             <p data-i18n="advanced.whitelist.desc">If <code>whitelist_enabled</code> is on, links containing strings from the whitelist are not blocked. The whitelist is stored in the <code>whitelist</code> table. You can add entries via SQL or through code (temporarily).</p>
             <h3 data-i18n="advanced.blocklist.title">6.2 Blocklist (forbidden words)</h3>
             <p data-i18n="advanced.blocklist.desc">The list of forbidden words is stored in the <code>blocklist.txt</code> file (one word per line) and in the database. The bot automatically checks if the file has changed (by modification time) and updates the database. You can update manually with <code>/reload_blocklist</code> or via the panel.</p>
-            <p data-i18n="advanced.blocklist.normalization">Words are normalized (replace Latin with Cyrillic, remove extra characters) and checked as whole words (with <code>\b</code> boundaries) to avoid false positives.</p>
+            <p data-i18n="advanced.blocklist.normalization">Words are normalized (replace Latin with Cyrillic, remove extra characters) and checked as whole words (with <code>\\b</code> boundaries) to avoid false positives.</p>
             <h3 data-i18n="advanced.exceptions.title">6.3 Blocklist exceptions</h3>
             <p data-i18n="advanced.exceptions.desc">Some phrases can be added to the <code>bad_exceptions</code> table; then they will not be considered a violation even if they contain forbidden roots.</p>
+            <h3 data-i18n="advanced.password.title">6.4 Password protection (private chats)</h3>
+            <p data-i18n="advanced.password.desc">To prevent unauthorized access to the bot in private messages, you can set a password in the <code>.env</code> file (<code>BOT_PASSWORD=your_secret</code>). Users must then type <code>/login your_password</code> in private before using any other commands. This does not affect group chats.</p>
 
             <!-- Ad block before dev section -->
             <div class="ad-block">
@@ -438,7 +440,7 @@
             <ul>
                 <li><code>main.py</code> – main bot file (all code).</li>
                 <li><code>blocklist.txt</code> – list of forbidden words.</li>
-                <li><code>.env</code> – file with bot token (must be created).</li>
+                <li><code>.env</code> – file with bot token (and optional password).</li>
                 <li><code>bot.db</code> – SQLite database (created automatically).</li>
             </ul>
             <div class="tip">
@@ -457,6 +459,8 @@
             <p data-i18n="faq.a4">Ads help support the server and the bot's development. You can change the text or disable it (see section 7).</p>
             <h4 data-i18n="faq.q5">Can I disable anti‑flood only for certain users?</h4>
             <p data-i18n="faq.a5">Currently no. But you can add users to the whitelist – it only applies to links, not flood.</p>
+            <h4 data-i18n="faq.q6">How does the password protection work?</h4>
+            <p data-i18n="faq.a6">If you set <code>BOT_PASSWORD</code> in <code>.env</code>, anyone who writes to the bot privately must first type <code>/login password</code> to access any commands. This prevents unauthorized use of the bot's private features.</p>
 
             <!-- 9. Support -->
             <h2 id="support" data-i18n="support.title">9. 📞 Support & contacts</h2>
@@ -488,7 +492,7 @@
             en: {
                 title: "📘 Documentation for @anti_spam_ua_bot",
                 subtitle: "Automatic group moderation • Anti‑spam • Punishment system",
-                version: "Version 2.0 (updated 16.02.2026)",
+                version: "Version 2.1 (updated 18.02.2026)",
                 "toc.title": "📋 Table of Contents",
                 "toc.about": "1. About the bot",
                 "toc.quickstart": "2. Quick start",
@@ -505,10 +509,11 @@
                 "about.feature1": "Deleting profanity, insults, suspicious phrases (ads, phishing).",
                 "about.feature2": "Link blocking (configurable).",
                 "about.feature3": "Anti‑flood (limits on messages per time).",
-                "about.feature4": "Duplicate message detection (identical messages).",
+                "about.feature4": "Duplicate message detection (identical messages within 24h).",
                 "about.feature5": "Captcha for new members (in development).",
                 "about.feature6": "Flexible punishment system (see section 4).",
                 "about.feature7": "Convenient control panel for admins.",
+                "about.feature8": "Password protection for private chats (optional).",
                 "about.desc3": "The bot is written in Python (aiogram 2.25.1) and uses SQLite to store settings.",
                 "quickstart.title": "2. ⚡ Quick start",
                 "quickstart.add": "2.1 Adding the bot to a group",
@@ -530,7 +535,7 @@
                 "panel.status": "Shows current chat settings, number of words in blocklist, warning limits, flood limits, etc.",
                 "panel.reload": "Forcibly reread the <code>blocklist.txt</code> file and add new words to the database.",
                 "panel.note": "When you press a button, the settings change instantly and you receive a confirmation.",
-                "punishment.title": "4. ⚖️ Punishment system (updated)",
+                "punishment.title": "4. ⚖️ Punishment system (updated 18.02.2026)",
                 "punishment.desc": "The bot automatically punishes offenders depending on the type of violation. All punishments are accompanied by message deletion and a chat notification (the notification is deleted after 30 seconds).",
                 "punishment.table.violation": "Violation type",
                 "punishment.table.action": "Action",
@@ -542,7 +547,7 @@
                 "punishment.regular.action": "🟡 Deletion + warning. After 3 warnings – 🔴 <strong>ban for 1 day</strong>.",
                 "punishment.flood": "Flood",
                 "punishment.flood.action": "🟡 Deletion + warning. After 3 warnings – 🔴 <strong>ban for 1 day</strong>.",
-                "punishment.repeat": "Duplicates",
+                "punishment.repeat": "Duplicates (3 identical messages within 24 hours)",
                 "punishment.repeat.action": "🔴 <strong>Instant ban for 7 days</strong> (no warnings).",
                 "punishment.mention": "@mentions",
                 "punishment.mention.action": "✅ <strong>NOT BLOCKED</strong>.",
@@ -553,6 +558,7 @@
                 "commands.desc": "All commands work in the group. Some require replying to the user's message.",
                 "commands.table.command": "Command",
                 "commands.table.description": "Description",
+                "commands.login": "<strong>Private chat only:</strong> If a password is set in <code>.env</code>, you must first log in with <code>/login your_password</code> to use any other commands in private.",
                 "commands.panel": "Open control panel (sent privately).",
                 "commands.status": "Show current module status, limits, statistics. Automatically deleted after 10 seconds in group.",
                 "commands.diag": "Diagnostics: chat ID, bot permissions, admin status.",
@@ -577,6 +583,8 @@
                 "advanced.blocklist.normalization": "Words are normalized (replace Latin with Cyrillic, remove extra characters) and checked as whole words (with <code>\\b</code> boundaries) to avoid false positives.",
                 "advanced.exceptions.title": "6.3 Blocklist exceptions",
                 "advanced.exceptions.desc": "Some phrases can be added to the <code>bad_exceptions</code> table; then they will not be considered a violation even if they contain forbidden roots.",
+                "advanced.password.title": "6.4 Password protection (private chats)",
+                "advanced.password.desc": "To prevent unauthorized access to the bot in private messages, you can set a password in the <code>.env</code> file (<code>BOT_PASSWORD=your_secret</code>). Users must then type <code>/login your_password</code> in private before using any other commands. This does not affect group chats.",
                 "dev.title": "7. 🛠 For developers (how to change the ad text)",
                 "dev.desc": "The bot has built‑in advertising that is sent with a 30% probability after a punishment, but no more than once every 5 minutes in a chat. To change the text or link, edit the <code>main.py</code> file.",
                 "dev.where.title": "7.1 Where is the ad text located?",
@@ -600,6 +608,8 @@
                 "faq.a4": "Ads help support the server and the bot's development. You can change the text or disable it (see section 7).",
                 "faq.q5": "Can I disable anti‑flood only for certain users?",
                 "faq.a5": "Currently no. But you can add users to the whitelist – it only applies to links, not flood.",
+                "faq.q6": "How does the password protection work?",
+                "faq.a6": "If you set <code>BOT_PASSWORD</code> in <code>.env</code>, anyone who writes to the bot privately must first type <code>/login password</code> to access any commands. This prevents unauthorized use of the bot's private features.",
                 "support.title": "9. 📞 Support & contacts",
                 "support.desc": "If you have any questions, suggestions or found a bug, contact:",
                 "support.note": "Or just write in the chat where the bot is – admins will help.",
@@ -612,7 +622,7 @@
             uk: {
                 title: "📘 Документація бота @anti_spam_ua_bot",
                 subtitle: "Автоматична модерація груп • Боротьба зі спамом • Система наказань",
-                version: "Версія 2.0 (оновлено 16.02.2026)",
+                version: "Версія 2.1 (оновлено 18.02.2026)",
                 "toc.title": "📋 Зміст",
                 "toc.about": "1. Про бота",
                 "toc.quickstart": "2. Швидкий старт",
@@ -629,10 +639,11 @@
                 "about.feature1": "Видалення матів, образ, підозрілих фраз (реклама, фішинг).",
                 "about.feature2": "Блокування посилань (налаштовується).",
                 "about.feature3": "Антифлуд (обмеження на кількість повідомлень за час).",
-                "about.feature4": "Виявлення повторів (однакові повідомлення).",
+                "about.feature4": "Виявлення повторів (однакові повідомлення протягом 24 год).",
                 "about.feature5": "Капча для нових учасників (у розробці).",
                 "about.feature6": "Гнучка система наказань (див. розділ 4).",
                 "about.feature7": "Зручна панель керування для адмінів.",
+                "about.feature8": "Захист паролем в особистих повідомленнях (опціонально).",
                 "about.desc3": "Бот написаний на Python (aiogram 2.25.1) та використовує SQLite для зберігання налаштувань.",
                 "quickstart.title": "2. ⚡ Швидкий старт",
                 "quickstart.add": "2.1 Додавання бота в групу",
@@ -654,7 +665,7 @@
                 "panel.status": "Показує поточні налаштування чату, кількість слів у блоклисті, ліміти попереджень, флуду тощо.",
                 "panel.reload": "Примусово перечитати файл <code>blocklist.txt</code> та додати нові слова в базу.",
                 "panel.note": "Після натискання на кнопку налаштування змінюються миттєво, і ви отримуєте підтвердження.",
-                "punishment.title": "4. ⚖️ Система наказань (оновлено)",
+                "punishment.title": "4. ⚖️ Система наказань (оновлено 18.02.2026)",
                 "punishment.desc": "Бот автоматично карає порушників залежно від типу порушення. Всі покарання супроводжуються видаленням повідомлення та сповіщенням у чат (сповіщення видаляється через 30 секунд).",
                 "punishment.table.violation": "Тип порушення",
                 "punishment.table.action": "Дія",
@@ -666,7 +677,7 @@
                 "punishment.regular.action": "🟡 Видалення + попередження. Після 3 попереджень – 🔴 <strong>бан на 1 день</strong>.",
                 "punishment.flood": "Флуд",
                 "punishment.flood.action": "🟡 Видалення + попередження. Після 3 попереджень – 🔴 <strong>бан на 1 день</strong>.",
-                "punishment.repeat": "Повтори",
+                "punishment.repeat": "Повтори (3 однакових повідомлення протягом 24 год)",
                 "punishment.repeat.action": "🔴 <strong>Миттєвий бан на 7 днів</strong> (без попереджень).",
                 "punishment.mention": "@згадування",
                 "punishment.mention.action": "✅ <strong>НЕ БЛОКУЮТЬСЯ</strong>.",
@@ -677,6 +688,7 @@
                 "commands.desc": "Всі команди працюють у групі. Деякі вимагають відповіді на повідомлення користувача (reply).",
                 "commands.table.command": "Команда",
                 "commands.table.description": "Опис",
+                "commands.login": "<strong>Тільки приватний чат:</strong> Якщо в <code>.env</code> встановлено пароль, спочатку потрібно ввести <code>/login ваш_пароль</code> для доступу до інших команд у приваті.",
                 "commands.panel": "Відкрити панель керування (надсилається в особисті).",
                 "commands.status": "Показати поточний стан модулів, ліміти, статистику. Автоматично видаляється через 10 секунд у групі.",
                 "commands.diag": "Діагностика: ID чату, права бота, статус адміністратора.",
@@ -701,6 +713,8 @@
                 "advanced.blocklist.normalization": "Слова нормалізуються (заміна латиниці на кирилицю, видалення зайвих символів) і перевіряються як цілі слова (з межами <code>\\b</code>), щоб уникнути помилкових спрацьовувань.",
                 "advanced.exceptions.title": "6.3 Винятки з блоклисту",
                 "advanced.exceptions.desc": "Деякі фрази можна додати до таблиці <code>bad_exceptions</code>, тоді вони не будуть вважатися порушенням, навіть якщо містять заборонені корені.",
+                "advanced.password.title": "6.4 Захист паролем (приватні чати)",
+                "advanced.password.desc": "Щоб запобігти несанкціонованому доступу до бота в особистих повідомленнях, можна встановити пароль у файлі <code>.env</code> (<code>BOT_PASSWORD=ваш_секрет</code>). Користувачі повинні будуть ввести <code>/login ваш_пароль</code> у приваті перед використанням інших команд. Це не впливає на групові чати.",
                 "dev.title": "7. 🛠 Для розробників (як змінити рекламний текст)",
                 "dev.desc": "Бот має вбудовану рекламу, яка надсилається з імовірністю 30% після покарання, але не частіше ніж раз на 5 хвилин у чаті. Щоб змінити текст або посилання, відредагуйте файл <code>main.py</code>.",
                 "dev.where.title": "7.1 Де знаходиться рекламний текст?",
@@ -724,6 +738,8 @@
                 "faq.a4": "Реклама допомагає підтримувати роботу сервера та розвиток бота. Ви можете змінити текст або вимкнути її (див. розділ 7).",
                 "faq.q5": "Чи можна вимкнути антифлуд тільки для певних користувачів?",
                 "faq.a5": "Наразі ні. Але ви можете додати користувачів до білого списку (whitelist) – це стосується тільки посилань, не флуду.",
+                "faq.q6": "Як працює захист паролем?",
+                "faq.a6": "Якщо встановлено <code>BOT_PASSWORD</code> у <code>.env</code>, будь-хто, хто пише боту в особисті, повинен спочатку ввести <code>/login пароль</code> для доступу до будь-яких команд. Це запобігає неавторизованому використанню приватних функцій бота.",
                 "support.title": "9. 📞 Підтримка та контакти",
                 "support.desc": "Якщо у вас виникли питання, пропозиції або ви знайшли помилку, звертайтеся:",
                 "support.note": "Або просто напишіть в чат, де є бот – адміністратори допоможуть.",
@@ -734,12 +750,10 @@
                 "footer.disclaimer": "Деякі посилання можуть бути партнерськими – це допомагає проєкту ❤️"
             },
             ru: {
-                // Русский перевод – можно заполнить по аналогии с украинским, но сейчас я использую упрощённый вариант (перевожу только ключевые фразы)
-                // Для полноты лучше будет перевести полностью. Оставлю как пример, но в финальном варианте нужно полное.
-                // Здесь я приведу только несколько строк для демонстрации. В реальном проекте нужно полное соответствие.
+                // Russian translation – please fill in (currently copied from English as placeholder)
                 title: "📘 Документация бота @anti_spam_ua_bot",
                 subtitle: "Автоматическая модерация групп • Борьба со спамом • Система наказаний",
-                version: "Версия 2.0 (обновлено 16.02.2026)",
+                version: "Версия 2.1 (обновлено 18.02.2026)",
                 "toc.title": "📋 Содержание",
                 "toc.about": "1. О боте",
                 "toc.quickstart": "2. Быстрый старт",
@@ -756,23 +770,23 @@
                 "about.feature1": "Удаление мата, оскорблений, подозрительных фраз (реклама, фишинг).",
                 "about.feature2": "Блокировка ссылок (настраивается).",
                 "about.feature3": "Антифлуд (ограничение на количество сообщений за время).",
-                "about.feature4": "Обнаружение повторов (одинаковые сообщения).",
+                "about.feature4": "Обнаружение повторов (одинаковые сообщения в течение 24 ч).",
                 "about.feature5": "Капча для новых участников (в разработке).",
                 "about.feature6": "Гибкая система наказаний (см. раздел 4).",
                 "about.feature7": "Удобная панель управления для админов.",
+                "about.feature8": "Защита паролем в личных сообщениях (опционально).",
                 "about.desc3": "Бот написан на Python (aiogram 2.25.1) и использует SQLite для хранения настроек.",
-                // ... остальные ключи нужно добавить аналогично.
-                // Из-за ограничения длины ответа я пропускаю полный русский и польский перевод, но в реальном коде они должны быть полными.
-                // Для польского также нужно добавить все строки.
-                // Пользователь сможет дополнить переводы самостоятельно.
+                // ... остальные ключи нужно перевести аналогично.
+                // Для экономии места оставляем как есть, но на сайте нужно заполнить.
+                "quickstart.title": "2. ⚡ Быстрый старт",
+                // ... (полный перевод необходим)
             },
             pl: {
-                // Польский перевод – аналогично, нужно добавить все ключи.
-                // Здесь только заглушка.
+                // Polish translation – please fill in (placeholder)
                 title: "📘 Dokumentacja bota @anti_spam_ua_bot",
                 subtitle: "Automatyczna moderacja grup • Walka ze spamem • System kar",
-                version: "Wersja 2.0 (aktualizacja 16.02.2026)",
-                // ... остальное
+                version: "Wersja 2.1 (aktualizacja 18.02.2026)",
+                // ... reszta tłumaczeń
             }
         };
 
@@ -785,25 +799,21 @@
                     el.innerHTML = translations[lang][key];
                 }
             });
-            // Update active button
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.lang === lang) {
                     btn.classList.add('active');
                 }
             });
-            // Optionally store language in localStorage
             localStorage.setItem('preferred-lang', lang);
         }
 
-        // Event listeners for language buttons
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 setLanguage(btn.dataset.lang);
             });
         });
 
-        // Set default language (English) or load from localStorage
         const savedLang = localStorage.getItem('preferred-lang') || 'en';
         setLanguage(savedLang);
     </script>
